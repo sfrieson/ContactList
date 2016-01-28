@@ -15,6 +15,15 @@ ctrl.controller('contactsController', ['$scope', '$http', function($scope, $http
         });
     };
 
+    $scope.removeContact = function(id){
+        contact = $scope.newContact;
+        $http.delete('/api/contacts/' + id).then(function(response){
+            dbContact = response.data;
+            getContacts();
+            $scope.contactDetail=null;
+        });
+    };
+
     $scope.oneContact = function(id){
         $http.get('/api/contacts/' + id).then(function(response){
             contact = response.data;
