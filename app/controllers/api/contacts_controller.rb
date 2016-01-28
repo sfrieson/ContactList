@@ -12,7 +12,13 @@
         contact = Contact.find(id)
         render json: contact
     end
-    def delete
+    def update
+        id = params[:id]
+        contact = Contact.find(id)
+        contact.update!(contact_params)
+        render json: contact
+    end
+    def destroy
         id = params[:id]
         contact = Contact.destroy(id)
         render json: contact

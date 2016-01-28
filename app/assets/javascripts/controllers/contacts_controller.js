@@ -32,13 +32,25 @@ ctrl.controller('contactsController', ['$scope', '$http', function($scope, $http
         });
     };
 
+    $scope.updateContact = function(id){
+        contact = $scope.contactDetail;
+        $http.put('/api/contacts/' + id, contact).then(function(response){
+            getContacts();
+            $scope.contactDetail = null;
+            $scope.editForm = false;
+        });
+
+    };
 
 
-    (function getContacts(){
+
+    function getContacts(){
         $http.get("/api/contacts").then(function(response){
             data = response.data;
             console.log(data);
             $scope.contacts = data.contacts;
         });
-    })();
+    }
+
+    getContacts();
 }]);

@@ -7,7 +7,7 @@
         <input type="text" ng-model='q' placeholder="Search...🔎">
     </div>
     <section id="contacts">
-        <article class="contact" ng-repeat="contact in contacts | filter: q">
+        <article class="contact" ng-repeat="contact in contacts | contact.lastname | filter: q ">
             <div class="photo">
                 <div class="img-container">
                     <img ng-src="{{contact.img}}" alt="{{ contact.firstname }} {{ contact.lastname }}'s' Profile Picture">
@@ -29,8 +29,9 @@
                 <input type="text" ng-model="newContact.company" placeholder="Company">
                 <input type="text" ng-model="newContact.phone" placeholder="Phone">
                 <button type="submit">Add</button>
+            </form>
         </div>
-        </form>
+
     </section>
 
     <article class="contact-card" ng-show="contactDetail">
@@ -49,8 +50,23 @@
                 {{ contactDetail.phone }}<br>
                 {{ contactDetail.email }}
             </div>
+            <div ng-click="editForm=true">
+                Edit
+            </div>
             <div ng-click="removeContact(contactDetail.id)">
                 Delete
+            </div>
+            <div id="edit-contact-form" ng-if="editForm">
+                <form ng-submit="updateContact(contactDetail.id)">
+                    <input type="text" ng-model="contactDetail.firstname" placeholder="First Name">
+                    <input type="text" ng-model="contactDetail.lastname" placeholder="Last Name">
+                    <input type="text" ng-model="contactDetail.email" placeholder="Email">
+                    <input type="text" ng-model="contactDetail.username" placeholder="Username">
+                    <input type="text" ng-model="contactDetail.img" placeholder="Image">
+                    <input type="text" ng-model="contactDetail.company" placeholder="Company">
+                    <input type="text" ng-model="contactDetail.phone" placeholder="Phone">
+                    <button type="submit">Add</button>
+                </form>
             </div>
         </div>
     </article>
