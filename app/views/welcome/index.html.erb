@@ -1,2 +1,23 @@
-<h1>Welcome#index</h1>
-<p>Find me in app/views/welcome/index.html.erb</p>
+<section id="sidebar" ng-controller="contactsController">
+    <header>
+        <h1>Contacts</h1>
+        <a class="add" href="#" >+</a>
+    </header>
+    <div id="search">
+        <input type="text" ng-model='q' placeholder="Search...🔎">
+    </div>
+    <section id="contacts">
+        <article class="contact" ng-repeat="contact in contacts | filter:q">
+            <div class="photo">
+                <div class="img-container">
+                    <img ng-src="{{contact.img}}" alt="{{ contact.firstname }} {{ contact.lastname }}'s' Profile Picture">
+                </div>
+                <div class="{{contact.status}}"></div>
+            </div>
+            <div class=info>
+                {{ contact.firstname }} {{ contact.lastname }}
+            </div>
+        </article>
+    </section>
+
+</section>
