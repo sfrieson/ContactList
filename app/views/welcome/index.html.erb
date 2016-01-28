@@ -1,23 +1,55 @@
 <section id="sidebar" ng-controller="contactsController">
     <header>
         <h1>Contacts</h1>
-        <a class="add" href="#" >+</a>
+        <a class="add" href="#" ng-click="form=!form">+</a>
     </header>
     <div id="search">
         <input type="text" ng-model='q' placeholder="Search...🔎">
     </div>
     <section id="contacts">
-        <article class="contact" ng-repeat="contact in contacts | filter:q">
+        <article class="contact" ng-repeat="contact in contacts | filter: q">
             <div class="photo">
                 <div class="img-container">
                     <img ng-src="{{contact.img}}" alt="{{ contact.firstname }} {{ contact.lastname }}'s' Profile Picture">
                 </div>
                 <div class="{{contact.status}}"></div>
             </div>
-            <div class=info>
+            <div class="info">
                 {{ contact.firstname }} {{ contact.lastname }}
             </div>
+            <button ng-click="oneContact(contact.id)">more</button>
         </article>
+        <div id="new-contact-form" ng-if="form">
+            <form ng-submit="addContact()">
+                <input type="text" ng-model="newContact.firstname" placeholder="First Name">
+                <input type="text" ng-model="newContact.lastname" placeholder="Last Name">
+                <input type="text" ng-model="newContact.email" placeholder="Email">
+                <input type="text" ng-model="newContact.username" placeholder="Username">
+                <input type="text" ng-model="newContact.img" placeholder="Image">
+                <input type="text" ng-model="newContact.company" placeholder="Company">
+                <input type="text" ng-model="newContact.phone" placeholder="Phone">
+                <button type="submit">Add</button>
+        </div>
+        </form>
     </section>
+
+    <article class="contact-card" ng-show="contactDetail">
+        <div class="content">
+            <div id="close" ng-click="contactDetail=null">X</div>
+            <div class="photo">
+                <div class="img-container">
+                    <img ng-src="{{contactDetail.img}}" alt="{{ contactDetail.firstname }} {{ contactDetail.lastname }}'s' Profile Picture">
+                </div>
+                <div class="{{contactDetail.status}}"></div>
+            </div>
+
+            <div class="info">
+                {{ contactDetail.firstname }} {{ contactDetail.lastname }}, ({{ contactDetail.username }})<br>
+                {{ contactDetail.company }}<br>
+                {{ contactDetail.phone }}<br>
+                {{ contactDetail.email }}
+            </div>
+        </div>
+    </article>
 
 </section>

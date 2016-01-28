@@ -5,8 +5,8 @@ class CreateContacts < ActiveRecord::Migration
       t.string :lastname
       t.string :email
       t.string :username
-      t.string :status
-      t.string :img
+      t.string :status, default: "offline"
+      t.string :img, default: "/assets/default-eb74ec720cfbb92f61dfa594d1a4da4571dec9334e0032d151848dfbf978f8ef.png"
       t.string :company
       t.string :phone
 

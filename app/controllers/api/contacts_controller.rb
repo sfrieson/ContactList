@@ -4,10 +4,11 @@
         render json: {contacts: contacts}
     end
     def create
-
+        newContact = Contact.create(contact_params)
+        render json: newContact
     end
     def show
-        id = params.id
+        id = params[:id]
         contact = Contact.find(id)
         render json: contact
     end
