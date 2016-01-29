@@ -16,22 +16,22 @@ ctrl.controller('contactsController', ['$scope', '$http', function($scope, $http
         });
     };
 
-    $scope.removeContact = function(id){
-        contact = $scope.newContact;
-        $http.delete('/api/contacts/' + id).then(function(response){
-            dbContact = response.data;
-            getContacts();
-            $scope.contactDetail=null;
+    function getContacts(){
+        $http.get("/api/contacts").then(function(response){
+            data = response.data;
+            $scope.contacts = data.contacts;
         });
-    };
+    }
 
     $scope.oneContact = function(id){
         $http.get('/api/contacts/' + id).then(function(response){
             contact = response.data;
             $scope.contactDetail = contact;
-            console.log(contact);
+            $scope.editForm = false;
         });
     };
+
+
 
     $scope.updateContact = function(id){
         contact = $scope.contactDetail;
@@ -40,9 +40,16 @@ ctrl.controller('contactsController', ['$scope', '$http', function($scope, $http
             $scope.contactDetail = null;
             $scope.editForm = false;
         });
-
     };
 
+    $scope.removeContact = function(id){
+        contact = $scope.newContact;
+        $http.delete('/api/contacts/' + id).then(function(response){
+            dbContact = response.data;
+            getContacts();
+            $scope.contactDetail=null;
+        });
+    };
 
 
     $scope.search = function(item){ //custom search filter for excluding property
@@ -56,13 +63,20 @@ ctrl.controller('contactsController', ['$scope', '$http', function($scope, $http
         return false;
     };
 
-    function getContacts(){
-        $http.get("/api/contacts").then(function(response){
-            data = response.data;
-            console.log(data);
-            $scope.contacts = data.contacts;
-        });
-    }
-
-    getContacts();
+    (function init() {
+        getContacts();
+    })();
 }]);
+
+
+// Filter to format telephone numbers
+ctrl.filter('tel', function(){
+    return function (numStr) {
+        if(!numStr){return "";}
+
+        var strArr = /([0-9]{3})([0-9]{3})([0-9]{4})/.exec(numStr);
+        var formatted = "(" + strArr[1] + ") " +
+                strArr[2] + "-" + strArr[3];
+        return formatted;
+    };
+});

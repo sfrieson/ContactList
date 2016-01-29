@@ -1,51 +1,55 @@
-<section id="sidebar" ng-controller="contactsController">
-    <header>
-        <div>
-            <h1>Contacts</h1>
-            <a class="add" href="#" ng-click="form=!form" ng-class="{'close-form': form, 'open-form': !form}">+</a>
-        </div>
-        <div id="search">
-            <input type="text" ng-model='query'  placeholder="Search...🔎">
-        </div>
-    </header>
+<section id="sidebar" ng-controller="contactsController" ng-class="{'on-screen': contactDetail, 'off-screen': !contactDetail}">
+    <div id="sidebar-bg">
+        <header>
+            <div>
+                <h1>Contacts</h1>
+            </div>
+            <div class="add" href="#" ng-click="form=!form" ng-class="{'close-form': form, 'open-form': !form}">+</div>
+            <div id="search">
+                <input type="text" ng-model='query'  placeholder="Search...🔎">
+            </div>
+        </header>
 
-    <!-- Contact Display -->
-    <section id="contacts">
+        <!-- Contact Display -->
+        <section id="contacts">
 
-        <!-- Contact List -->
-        <article class="contact" ng-repeat="contact in contacts | filter: search | orderBy: 'lastname'">
-            <div class="photo">
-                <div class="img-container">
-                    <img ng-src="{{contact.img}}" alt="{{ contact.firstname }} {{ contact.lastname }}'s' Profile Picture">
+            <!-- Contact List -->
+            <article class="contact" ng-repeat="contact in contacts | filter: search | orderBy: 'lastname'">
+                <div class="photo">
+                    <div class="img-container">
+                        <img ng-src="{{contact.img}}" alt="{{ contact.firstname }} {{ contact.lastname }}'s' Profile Picture">
+                    </div>
+                    <div class="{{contact.status}}"></div>
                 </div>
-                <div class="{{contact.status}}"></div>
+                <div class="info">
+                    <h2>{{ contact.firstname }} {{ contact.lastname }}</h2>
+                    <div>@{{ contact.username }} | {{ contact.phone | tel }}</div>
+                </div>
+                <a class="more-btn" ng-click="oneContact(contact.id)">more</button>
+            </article>
+
+            <!-- New Contact Form -->
+            <div id="new-contact-form" class="form-off" ng-class="{'form-on': form, 'form-off': !form}">
+                <h1>New Contact</h1>
+                <form ng-submit="addContact()">
+                    <input type="text" ng-model="newContact.firstname" placeholder="First Name">
+                    <input type="text" ng-model="newContact.lastname" placeholder="Last Name">
+                    <input type="text" ng-model="newContact.email" placeholder="Email">
+                    <input type="text" ng-model="newContact.username" placeholder="Username">
+                    <input type="text" ng-model="newContact.img" placeholder="Image">
+                    <input type="text" ng-model="newContact.company" placeholder="Company">
+                    <input type="text" ng-model="newContact.phone" placeholder="Phone">
+                    <input type="submit" value="Add">
+                </form>
             </div>
-            <div class="info">
-                <h2>{{ contact.firstname }} {{ contact.lastname }}</h2>
-                <div>{{ contact.username }} | {{ contact.phone }}</div>
-            </div>
-            <a class="more-btn" ng-click="oneContact(contact.id)">more</button>
-        </article>
 
-        <!-- New Contact Form -->
-        <div id="new-contact-form" class="form-off" ng-class="{'form-on': form, 'form-off': !form}">
-            <form ng-submit="addContact()">
-                <input type="text" ng-model="newContact.firstname" placeholder="First Name">
-                <input type="text" ng-model="newContact.lastname" placeholder="Last Name">
-                <input type="text" ng-model="newContact.email" placeholder="Email">
-                <input type="text" ng-model="newContact.username" placeholder="Username">
-                <input type="text" ng-model="newContact.img" placeholder="Image">
-                <input type="text" ng-model="newContact.company" placeholder="Company">
-                <input type="text" ng-model="newContact.phone" placeholder="Phone">
-                <input type="submit" value="Add">
-            </form>
-        </div>
+        </section>
+    </div>
 
-    </section>
-
-    <article class="contact-card" ng-show="contactDetail">
+    <!-- Behind the Sidebar background -->
+    <article class="contact-card" ng-class="{'on-screen': contactDetail, 'off-screen': !contactDetail}">
         <div class="content">
-            <div id="close" ng-click="contactDetail=null">X</div>
+            <a class="close-btn" ng-click="contactDetail=null">+</a>
             <div class="photo">
                 <div class="img-container">
                     <img ng-src="{{contactDetail.img}}" alt="{{ contactDetail.firstname }} {{ contactDetail.lastname }}'s' Profile Picture">
@@ -54,18 +58,18 @@
             </div>
 
             <div class="info">
-                {{ contactDetail.firstname }} {{ contactDetail.lastname }}, ({{ contactDetail.username }})<br>
+                <h2>{{ contactDetail.firstname }} {{ contactDetail.lastname }},</h2>
+                @{{ contactDetail.username }}<br><br>
+
                 {{ contactDetail.company }}<br>
-                {{ contactDetail.phone }}<br>
+                {{ contactDetail.phone | tel}}<br>
                 {{ contactDetail.email }}
             </div>
-            <div ng-click="editForm=true">
+            <div class="edit-btn" ng-click="editForm=!editForm">
                 Edit
             </div>
-            <div ng-click="removeContact(contactDetail.id)">
-                Delete
-            </div>
-            <div id="edit-contact-form" ng-if="editForm">
+
+            <div id="edit-contact-form" ng-class="{'show': editForm, 'hide': !editForm}">
                 <form ng-submit="updateContact(contactDetail.id)">
                     <input type="text" ng-model="contactDetail.firstname" placeholder="First Name">
                     <input type="text" ng-model="contactDetail.lastname" placeholder="Last Name">
@@ -74,10 +78,12 @@
                     <input type="text" ng-model="contactDetail.img" placeholder="Image">
                     <input type="text" ng-model="contactDetail.company" placeholder="Company">
                     <input type="text" ng-model="contactDetail.phone" placeholder="Phone">
-                    <button type="submit">Add</button>
+                    <input type="submit" value="UPDATE">
                 </form>
+                <div class="delete-btn" ng-click="removeContact(contactDetail.id)">
+                    Delete
+                </div>
             </div>
         </div>
     </article>
-
 </section>
