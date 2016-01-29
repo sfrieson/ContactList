@@ -3,6 +3,7 @@ var ctrl = angular.module("ContactsController", []);
 ctrl.controller('contactsController', ['$scope', '$http', function($scope, $http){
     $scope.contacts=[];
     $scope.newContact = {};
+    $scope.query="";
 
 
     $scope.addContact = function(){
@@ -43,6 +44,17 @@ ctrl.controller('contactsController', ['$scope', '$http', function($scope, $http
     };
 
 
+
+    $scope.search = function(item){ //custom search filter for excluding property
+        for (var key in item){
+            if (key != "id" && key != "img"){ //exclude id because its not string
+                if(item[key].indexOf($scope.query) > -1){
+                    return true;
+                }
+            }
+        }
+        return false;
+    };
 
     function getContacts(){
         $http.get("/api/contacts").then(function(response){

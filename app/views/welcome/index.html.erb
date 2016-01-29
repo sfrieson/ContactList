@@ -1,13 +1,19 @@
 <section id="sidebar" ng-controller="contactsController">
     <header>
-        <h1>Contacts</h1>
-        <a class="add" href="#" ng-click="form=!form">+</a>
+        <div>
+            <h1>Contacts</h1>
+            <a class="add" href="#" ng-click="form=!form" ng-class="{'close-form': form, 'open-form': !form}">+</a>
+        </div>
+        <div id="search">
+            <input type="text" ng-model='query'  placeholder="Search...🔎">
+        </div>
     </header>
-    <div id="search">
-        <input type="text" ng-model='q' placeholder="Search...🔎">
-    </div>
+
+    <!-- Contact Display -->
     <section id="contacts">
-        <article class="contact" ng-repeat="contact in contacts | contact.lastname | filter: q ">
+
+        <!-- Contact List -->
+        <article class="contact" ng-repeat="contact in contacts | filter: search | orderBy: 'lastname'">
             <div class="photo">
                 <div class="img-container">
                     <img ng-src="{{contact.img}}" alt="{{ contact.firstname }} {{ contact.lastname }}'s' Profile Picture">
@@ -15,11 +21,14 @@
                 <div class="{{contact.status}}"></div>
             </div>
             <div class="info">
-                {{ contact.firstname }} {{ contact.lastname }}
+                <h2>{{ contact.firstname }} {{ contact.lastname }}</h2>
+                <div>{{ contact.username }} | {{ contact.phone }}</div>
             </div>
-            <button ng-click="oneContact(contact.id)">more</button>
+            <a class="more-btn" ng-click="oneContact(contact.id)">more</button>
         </article>
-        <div id="new-contact-form" ng-if="form">
+
+        <!-- New Contact Form -->
+        <div id="new-contact-form" class="form-off" ng-class="{'form-on': form, 'form-off': !form}">
             <form ng-submit="addContact()">
                 <input type="text" ng-model="newContact.firstname" placeholder="First Name">
                 <input type="text" ng-model="newContact.lastname" placeholder="Last Name">
@@ -28,7 +37,7 @@
                 <input type="text" ng-model="newContact.img" placeholder="Image">
                 <input type="text" ng-model="newContact.company" placeholder="Company">
                 <input type="text" ng-model="newContact.phone" placeholder="Phone">
-                <button type="submit">Add</button>
+                <input type="submit" value="Add">
             </form>
         </div>
 

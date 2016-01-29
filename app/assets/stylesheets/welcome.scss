@@ -2,13 +2,37 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 $bg: lightgray;
+$font-color: #777;
+@mixin status($color, $size, $x, $y) {
+    width: $size;
+    height: $size;
+    background-color: $color;
+    border: 4px solid $bg;
+    border-radius: 50%;
+    position: absolute;
+    top: $y;
+    left: $x;
+}
+
+@mixin input() {
+    height:2em;
+    line-height:2em;
+    font-size: 1.2em;
+    border-radius: 3px;
+    border: 1px solid #777;
+    width: 94%;
+    margin: 0 3%;
+    padding: 0 10px;
+    color: $font-color;
+}
 
 body {
     margin: 0;
-
-}
-body * {
-    box-sizing: border-box;
+    font-family: Helvetica Neue, sans-serif;
+    color: $font-color;
+    * {
+        box-sizing: border-box;
+    }
 }
 
 #sidebar {
@@ -21,60 +45,94 @@ body * {
         right: 2px solid darken($bg, 10%);
     }
 }
-header *{
-    display: inline-block;
-    margin: 5px 10px
+header {
+    text-align: center;
+    padding-top: 10px;
+    height: 90px;
+    h1 {
+        color: #777;
+        display: inline-block;
+        margin: 0;
+        padding-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: .2em;
+        font-weight: lighter;
+    }
+    .add{
+        text-decoration: none;
+        font-size: 2.2em;
+        text-align: center;
+        line-height: .6em;
+        float: right;
+        margin-right: 10px;
+    }
+    #search {
+        input { @include input()}
+    }
 }
 
-a.add{
-    text-decoration: none;
-    font-size: 2em;
-    color: black;
-}
 
 #contacts {
     overflow:scroll;
 }
 .contact {
     position: relative;
-    padding: 2px;
+    padding: 5px 3%;
     border: {
-        top: 2px solid lighten($bg, 10%);;
-        bottom: 2px solid darken($bg, 10%);;
+        top: 2px solid lighten($bg, 10%);
+        bottom: 2px solid darken($bg, 10%);
+    }
+
+    * {
+        vertical-align: top;
+    }
+    .photo {
+        display: inline-block;
+        overflow: none;
+        overflow: hidden;
+
+        img {
+            width:50px;
+        }
+    }
+    .img-container {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+
+    .active {@include status(green, 20px, 44px, 38px);}
+    .busy {@include status(red, 20px, 44px, 38px);}
+    .offline {@include status(gray, 20px, 44px, 38px);}
+
+    .more-btn {
+        height: 100%;
+        width: 70px;
+        text-align: center;
+        border-left: 1px solid darken($bg, 10%);
+        padding-top: 20px;
+        position: absolute;
+        right: 0;
+        top: 0;
+        display: block;
+
+    }
+    .info{
+        display:inline-block;
+        padding-left: 5px;
+
+        h2 {
+            font-weight: 300;
+            margin: 0;
+
+        }
     }
 }
-.contact * {
-    vertical-align: top;
-}
-.photo {
-    display: inline-block;
-}
-.img-container {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    overflow: hidden;
-}
-.photo img {
-    width:100px;
-}
-@mixin status($color) {
-    width: 25px;
-    height: 25px;
-    background-color: $color;
-    border: 4px solid $bg;
-    border-radius: 50%;
-    position: absolute;
-    top: 78px;
-    left: 78px;
-}
-.active {@include status(green);}
-.busy {@include status(red);}
-.offline {@include status(gray);}
 
-.info{
-    display:inline-block;
-}
+
+
+
 
 .contact-card {
     padding: 20px;
@@ -83,10 +141,68 @@ a.add{
     left: 350px;
     background-color: $bg;
     box-shadow: 0 5px 15px  rgba(0, 0, 0, .2);
+
+    * {
+        vertical-align: top;
+    }
+
+    .photo {
+        display: block;
+    }
+
+    .img-container {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+    .photo img {
+        width:100px;
+    }
+
+    .active {@include status(green, 30px, 70px, 70px);}
+    .busy {@include status(red, 30px, 70px, 70px);}
+    .offline {@include status(gray, 30px, 70px, 70px);}
 }
-.contact-card content{
+
+
+#new-contact-form {
+    background-color: $bg;
+    box-shadow:  0 -5px 5px rgba(0, 0, 0, .2);
+    width: 400px;
+    position: fixed;
+    height: 100%;
+    text-align: center;
+    padding: {
+        top: 20px;
+    }
+    input {
+        @include input();
+        margin: {
+            bottom: 3px;
+        }
+    }
+    input[type="submit"] {
+        background-color: lightblue;
+    }
 
 }
-.contact-card * {
-    vertical-align: top;
+
+.form-off{
+    top:100%;
+    transition: all .25s ease-in;
+}
+.form-on {
+    top:90px;
+    transition: all .25s ease-out;
+}
+.open-form{
+    transition: all .25s cubic-bezier(0.25, -1.5, 0.75, 2.5);
+}
+.close-form{
+    transform: rotate(45deg);
+    transition: all .25s cubic-bezier(0.25, -1.5, 0.75, 2.5);
+}
+.slide {
+
 }
