@@ -55,7 +55,12 @@ ctrl.controller('contactsController', ['$scope', '$http', function($scope, $http
     $scope.search = function(item){ //custom search filter for excluding property
         for (var key in item){
             if (key != "id" && key != "img"){ //exclude id because its not string
-                if(item[key].indexOf($scope.query) > -1){
+
+                
+                var lowerKey = item[key].toLowerCase();//make case lowercase
+                var query = $scope.query.toLowerCase();//make case lowercase
+
+                if(lowerKey.indexOf(query) > -1){
                     return true;
                 }
             }
